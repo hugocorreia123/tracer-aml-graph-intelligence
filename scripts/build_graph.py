@@ -37,6 +37,12 @@ trans["timestamp"] = pd.to_datetime(trans["timestamp"],
                                     format="%Y/%m/%d %H:%M")
 
 # Composite node ids (bank + account)
+def norm_bank(s: pd.Series) -> pd.Series:
+    out = s.str.lstrip("0")
+    return out.where(out != "", "0")
+
+trans["from_bank"] = norm_bank(trans["from_bank"])
+trans["to_bank"] = norm_bank(trans["to_bank"])
 trans["src"] = trans["from_bank"] + "_" + trans["from_acct"]
 trans["dst"] = trans["to_bank"] + "_" + trans["to_acct"]
 
