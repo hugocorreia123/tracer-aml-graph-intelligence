@@ -57,8 +57,8 @@ Transactions ──► Account–transaction GRAPH ──► GNN node scorer (Py
 ## Roadmap
 
 - [x] **Phase 0 — Data + graph**: HI-Small pipeline, composite node IDs, 8-typology pattern parsing (100% ground-truth join), graph stats, first ring visualization
-- [ ] **Phase 1 — Tabular baseline**: per-account features → LightGBM, PR-AUC (the honest control the GNN must beat)
-- [ ] **Phase 2 — First GNN**: GraphSAGE node classifier vs. baseline on the same split
+- [x] **Phase 1 — Tabular baseline**: per-account features → LightGBM, PR-AUC (the honest control the GNN must beat) — **test PR-AUC 0.371**
+- [x] **Phase 2 — First GNN**: GraphSAGE node classifier vs. baseline on the same split — **test PR-AUC 0.503 (+36% over baseline)**
 - [ ] **Phase 3 — Stronger detector**: GAT + imbalance handling; false-positive reduction at fixed recall
 - [ ] **Phase 4 — Ring extraction**: flagged subgraphs + typology motif detection
 - [ ] **Phase 5 — Agentic SAR investigator**: LangGraph agent drafts judge-checkable SARs
