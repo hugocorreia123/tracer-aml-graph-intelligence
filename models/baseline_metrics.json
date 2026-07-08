@@ -1,0 +1,14 @@
+{
+  "val_pr_auc": 0.3716519094256853,
+  "val_roc_auc": 0.9019474109408223,
+  "test_pr_auc": 0.3709617711597692,
+  "test_roc_auc": 0.9050991414450602,
+  "threshold_val_maxf1": 0.2524166572873916,
+  "test_precision": 0.7885985748218527,
+  "test_recall": 0.2612116443745083,
+  "test_f1": 0.39243498817966904,
+  "test_alerts": 421,
+  "test_tp": 332,
+  "test_fp": 89,
+  "best_iteration": 135
+}
