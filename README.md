@@ -60,7 +60,7 @@ Transactions ──► Account–transaction GRAPH ──► GNN node scorer (Py
 - [x] **Phase 1 — Tabular baseline**: per-account features → LightGBM, PR-AUC (the honest control the GNN must beat) — **test PR-AUC 0.371**
 - [x] **Phase 2 — First GNN**: GraphSAGE node classifier vs. baseline on the same split — **test PR-AUC 0.503 (+36% over baseline)**
 - [x] **Phase 3 — Stronger detector**: tuned 3-layer GraphSAGE — **test PR-AUC 0.519 (+40% vs tabular)**; GATv2 tried and *underperformed* (0.492 at 2× the compute); **47% fewer false positives at 70% recall** (≈$1.3–3.0M/yr illustrative at 100K alerts)
-- [ ] **Phase 4 — Ring extraction**: flagged subgraphs + typology motif detection
+- [x] **Phase 4 — Ring extraction**: flagged subgraphs → recursive Louvain decomposition into **3,058 investigable rings (≤60 accounts)**; **60.3% of labeled attempts covered** (86.5% at raw component level — coverage/investigability tradeoff); cycles & fans well covered, STACK/BIPARTITE are the blind spot
 - [ ] **Phase 5 — Agentic SAR investigator**: LangGraph agent drafts judge-checkable SARs
 - [ ] **Phase 6 — Evaluation**: detection metrics per typology; SAR quality via cross-family LLM-as-judge validated against blind human labels (Cohen's κ)
 - [ ] **Phase 7 — Serving + monitoring**: FastAPI scoring, drift/volume monitoring
