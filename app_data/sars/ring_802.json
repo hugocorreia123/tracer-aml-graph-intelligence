@@ -1,0 +1,20 @@
+{
+  "ring_id": 802,
+  "status": "DRAFT \u2014 PENDING HUMAN REVIEW",
+  "generated_at": "2026-07-09T02:53:10.181598+00:00",
+  "model": "qwen/qwen3-32b",
+  "agent_steps": 8,
+  "tool_calling_turns": 3,
+  "verdict": {
+    "typology": "MIXED/UNCLEAR",
+    "confidence": 0.8,
+    "summary": "The ring exhibits partial gather-scatter and fan-out characteristics but lacks clear cyclical or layered structures. High GNN score suggests suspicious behavior despite limited transaction volume.",
+    "key_evidence": [
+      "Account 211_80A451570 receives $17,945.79 from 13057_80DED0520 and sends $19,934.49 to 17401_80D179410 (hub-like activity)",
+      "Two large transfers of $21,036.15 and $20,497.17 indicate potential value displacement between external accounts",
+      "No detectable cycles but 4/5 accounts show in/out degree balance suggesting transactional symmetry"
+    ],
+    "recommendation": "file_sar"
+  },
+  "narrative": "```json\n{\n  \"typology\": \"MIXED/UNCLEAR\",\n  \"confidence\": 0.8,\n  \"summary\": \"The ring exhibits partial gather-scatter and fan-out characteristics but lacks clear cyclical or layered structures. High GNN score suggests suspicious behavior despite limited transaction volume.\",\n  \"key_evidence\": [\n    \"Account 211_80A451570 receives $17,945.79 from 13057_80DED0520 and sends $19,934.49 to 17401_80D179410 (hub-like activity)\",\n    \"Two large transfers of $21,036.15 and $20,497.17 indicate potential value displacement between external accounts\",\n    \"No detectable cycles but 4/5 accounts show in/out degree balance suggesting transactional symmetry\"\n  ],\n  \"recommendation\": \"file_sar\"\n}\n```"
+}

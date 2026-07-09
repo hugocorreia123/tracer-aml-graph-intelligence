@@ -1,0 +1,21 @@
+{
+  "ring_id": 119,
+  "status": "DRAFT \u2014 PENDING HUMAN REVIEW",
+  "generated_at": "2026-07-09T02:57:35.566048+00:00",
+  "model": "qwen/qwen3-32b",
+  "agent_steps": 8,
+  "tool_calling_turns": 3,
+  "verdict": {
+    "typology": "FAN-IN",
+    "confidence": 0.92,
+    "summary": "This ring exhibits a clear FAN-IN structure where 9 accounts funnel funds into account 17863_810C289B0, which receives 90% of all incoming transactions. The largest single flow (\u20ac8.99M) moves from 3242_80BECDBF0 to 228540_810E62EB0 before cascading into the central hub.",
+    "key_evidence": [
+      "Account 17863_810C289B0 receives 9/12 total incoming transactions (in_deg=9)",
+      "\u20ac8.99M transferred from 3242_80BECDBF0 to 228540_810E62EB0 (10x transactions)",
+      "12 accounts send funds to central account 17863_810C289B0 across 11 separate flows",
+      "High GNN score of 0.895 for 13-account ring with \u20ac9.11M total volume in 12 days"
+    ],
+    "recommendation": "file_sar"
+  },
+  "narrative": "```json\n{\n  \"typology\": \"FAN-IN\",\n  \"confidence\": 0.92,\n  \"summary\": \"This ring exhibits a clear FAN-IN structure where 9 accounts funnel funds into account 17863_810C289B0, which receives 90% of all incoming transactions. The largest single flow (\u20ac8.99M) moves from 3242_80BECDBF0 to 228540_810E62EB0 before cascading into the central hub.\",\n  \"key_evidence\": [\n    \"Account 17863_810C289B0 receives 9/12 total incoming transactions (in_deg=9)\",\n    \"\u20ac8.99M transferred from 3242_80BECDBF0 to 228540_810E62EB0 (10x transactions)\",\n    \"12 accounts send funds to central account 17863_810C289B0 across 11 separate flows\",\n    \"High GNN score of 0.895 for 13-account ring with \u20ac9.11M total volume in 12 days\"\n  ],\n  \"recommendation\": \"file_sar\"\n}\n```"
+}

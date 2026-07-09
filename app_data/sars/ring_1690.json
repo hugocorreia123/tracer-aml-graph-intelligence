@@ -1,0 +1,20 @@
+{
+  "ring_id": 1690,
+  "status": "DRAFT \u2014 PENDING HUMAN REVIEW",
+  "generated_at": "2026-07-09T03:16:00.885481+00:00",
+  "model": "qwen/qwen3-32b",
+  "agent_steps": 8,
+  "tool_calling_turns": 3,
+  "verdict": {
+    "typology": "UNCLEAR",
+    "confidence": 0.3,
+    "summary": "The ring shows a linear flow from account 111121_80698E6A0 to 246894_81278BAE0, then to 47901_812776FE0, with no cycles or hub-and-spoke patterns. The structure lacks clear typology markers like fan-out/in or bipartite layers.",
+    "key_evidence": [
+      "111121_80698E6A0 \u2192 246894_81278BAE0: \u20ac2,684,895.46 (ACH/Cheque)",
+      "246894_81278BAE0 \u2192 47901_812776FE0: \u20ac40,353.37 (2 transactions)",
+      "No cycles or multi-counterparty interactions detected"
+    ],
+    "recommendation": "monitor"
+  },
+  "narrative": "```json\n{\n  \"typology\": \"UNCLEAR\",\n  \"confidence\": 0.3,\n  \"summary\": \"The ring shows a linear flow from account 111121_80698E6A0 to 246894_81278BAE0, then to 47901_812776FE0, with no cycles or hub-and-spoke patterns. The structure lacks clear typology markers like fan-out/in or bipartite layers.\",\n  \"key_evidence\": [\n    \"111121_80698E6A0 \u2192 246894_81278BAE0: \u20ac2,684,895.46 (ACH/Cheque)\",\n    \"246894_81278BAE0 \u2192 47901_812776FE0: \u20ac40,353.37 (2 transactions)\",\n    \"No cycles or multi-counterparty interactions detected\"\n  ],\n  \"recommendation\": \"monitor\"\n}\n```"
+}

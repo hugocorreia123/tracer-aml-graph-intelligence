@@ -1,0 +1,21 @@
+{
+  "ring_id": 72,
+  "status": "DRAFT \u2014 PENDING HUMAN REVIEW",
+  "generated_at": "2026-07-09T02:37:43.501377+00:00",
+  "model": "qwen/qwen3-32b",
+  "agent_steps": 6,
+  "tool_calling_turns": 2,
+  "verdict": {
+    "typology": "GATHER-SCATTER",
+    "confidence": 0.99,
+    "summary": "Funds concentrate into hub account 29404_8041A3440 before dispersing to 12 counterparties. The hub simultaneously receives inflows from external accounts, showing dual role in aggregation and distribution.",
+    "key_evidence": [
+      "Hub account 29404_8041A3440 received $12,641.75 from 39668_80F1F4BD0",
+      "Hub dispersed $15,918.17 to 20248_80EBC6500 and $12,994.92 to 18049_80E3027B0 in single transactions",
+      "14 total transactions occurred within 6-day window (Sep 11-18 2022) across 15 accounts",
+      "Mean GNN suspicion score of 0.9998 indicates strong structural abnormality"
+    ],
+    "recommendation": "file_sar"
+  },
+  "narrative": "```json\n{\n  \"typology\": \"GATHER-SCATTER\",\n  \"confidence\": 0.99,\n  \"summary\": \"Funds concentrate into hub account 29404_8041A3440 before dispersing to 12 counterparties. The hub simultaneously receives inflows from external accounts, showing dual role in aggregation and distribution.\",\n  \"key_evidence\": [\n    \"Hub account 29404_8041A3440 received $12,641.75 from 39668_80F1F4BD0\",\n    \"Hub dispersed $15,918.17 to 20248_80EBC6500 and $12,994.92 to 18049_80E3027B0 in single transactions\",\n    \"14 total transactions occurred within 6-day window (Sep 11-18 2022) across 15 accounts\",\n    \"Mean GNN suspicion score of 0.9998 indicates strong structural abnormality\"\n  ],\n  \"recommendation\": \"file_sar\"\n}\n```"
+}

@@ -1,0 +1,20 @@
+{
+  "ring_id": 2354,
+  "status": "DRAFT \u2014 PENDING HUMAN REVIEW",
+  "generated_at": "2026-07-09T03:13:55.037304+00:00",
+  "model": "qwen/qwen3-32b",
+  "agent_steps": 8,
+  "tool_calling_turns": 3,
+  "verdict": {
+    "typology": "FAN-IN",
+    "confidence": 0.65,
+    "summary": "Two accounts (135010_80CFCAE60 and 35520_80D74F2F0) funneled funds into a single destination account (10_80D750790), with 4 transactions totaling 69,118.87 BRL and 1 transaction of 4,935.43 BRL respectively. No downstream dispersion observed.",
+    "key_evidence": [
+      "Account 10_80D750790 received 69,118.87 BRL from 135010_80CFCAE60 (4 tx) and 4,935.43 BRL from 35520_80D74F2F0 (1 tx)",
+      "Central account 10_80D750790 has in-degree=2, out-degree=0",
+      "No cycles or secondary flows detected in 5 transactions over 8 days"
+    ],
+    "recommendation": "monitor"
+  },
+  "narrative": "```json\n{\n  \"typology\": \"FAN-IN\",\n  \"confidence\": 0.65,\n  \"summary\": \"Two accounts (135010_80CFCAE60 and 35520_80D74F2F0) funneled funds into a single destination account (10_80D750790), with 4 transactions totaling 69,118.87 BRL and 1 transaction of 4,935.43 BRL respectively. No downstream dispersion observed.\",\n  \"key_evidence\": [\n    \"Account 10_80D750790 received 69,118.87 BRL from 135010_80CFCAE60 (4 tx) and 4,935.43 BRL from 35520_80D74F2F0 (1 tx)\",\n    \"Central account 10_80D750790 has in-degree=2, out-degree=0\",\n    \"No cycles or secondary flows detected in 5 transactions over 8 days\"\n  ],\n  \"recommendation\": \"monitor\"\n}\n```"
+}

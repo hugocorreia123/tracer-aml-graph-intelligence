@@ -1,0 +1,20 @@
+{
+  "ring_id": 2772,
+  "status": "DRAFT \u2014 PENDING HUMAN REVIEW",
+  "generated_at": "2026-07-09T03:19:18.646211+00:00",
+  "model": "qwen/qwen3-32b",
+  "agent_steps": 8,
+  "tool_calling_turns": 3,
+  "verdict": {
+    "typology": "GATHER-SCATTER",
+    "confidence": 0.65,
+    "summary": "Funds from two accounts consolidate into account 25749_80D7BCD90 (the hub), then partially disperse to another account. The structure shows two incoming transactions totaling $84,158.88 to the hub and one outgoing $3,817.81 payment.",
+    "key_evidence": [
+      "11642_80D7B83C0 sends $41,037.82 to hub 25749_80D7BCD90",
+      "32464_80D7BD0F0 sends $43,121.06 to hub 25749_80D7BCD90",
+      "Hub 25749_80D7BCD90 sends $3,817.81 to 32464_80D7BD0F0"
+    ],
+    "recommendation": "monitor"
+  },
+  "narrative": "```json\n{\n  \"typology\": \"GATHER-SCATTER\",\n  \"confidence\": 0.65,\n  \"summary\": \"Funds from two accounts consolidate into account 25749_80D7BCD90 (the hub), then partially disperse to another account. The structure shows two incoming transactions totaling $84,158.88 to the hub and one outgoing $3,817.81 payment.\",\n  \"key_evidence\": [\n    \"11642_80D7B83C0 sends $41,037.82 to hub 25749_80D7BCD90\",\n    \"32464_80D7BD0F0 sends $43,121.06 to hub 25749_80D7BCD90\",\n    \"Hub 25749_80D7BCD90 sends $3,817.81 to 32464_80D7BD0F0\"\n  ],\n  \"recommendation\": \"monitor\"\n}\n```"
+}

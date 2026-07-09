@@ -1,0 +1,20 @@
+{
+  "ring_id": 73,
+  "status": "DRAFT \u2014 PENDING HUMAN REVIEW",
+  "generated_at": "2026-07-09T02:46:05.318176+00:00",
+  "model": "qwen/qwen3-32b",
+  "agent_steps": 8,
+  "tool_calling_turns": 3,
+  "verdict": {
+    "typology": "FAN-IN",
+    "confidence": 0.85,
+    "summary": "This ring exhibits a clear FAN-IN pattern where multiple accounts funnel funds into a central hub account (41407_80F454910), which receives 8 distinct incoming transactions from disparate sources. The structure is amplified by an initial massive transfer of $4.61 billion from 1688_800406A10 to 1_800407920, suggesting potential consolidation of illicit proceeds.",
+    "key_evidence": [
+      "Account 41407_80F454910 receives funds from 8 unique senders (in_deg=8) with no outgoing transactions (out_deg=0)",
+      "$4.61 billion transferred from 1688_800406A10 to 1_800407920 in single transaction (99.3% of total ring volume)",
+      "15 accounts/19 transactions compressed into 14-day window with high GNN score (0.7588)"
+    ],
+    "recommendation": "file_sar"
+  },
+  "narrative": "```json\n{\n  \"typology\": \"FAN-IN\",\n  \"confidence\": 0.85,\n  \"summary\": \"This ring exhibits a clear FAN-IN pattern where multiple accounts funnel funds into a central hub account (41407_80F454910), which receives 8 distinct incoming transactions from disparate sources. The structure is amplified by an initial massive transfer of $4.61 billion from 1688_800406A10 to 1_800407920, suggesting potential consolidation of illicit proceeds.\",\n  \"key_evidence\": [\n    \"Account 41407_80F454910 receives funds from 8 unique senders (in_deg=8) with no outgoing transactions (out_deg=0)\",\n    \"$4.61 billion transferred from 1688_800406A10 to 1_800407920 in single transaction (99.3% of total ring volume)\",\n    \"15 accounts/19 transactions compressed into 14-day window with high GNN score (0.7588)\"\n  ],\n  \"recommendation\": \"file_sar\"\n}\n```"
+}

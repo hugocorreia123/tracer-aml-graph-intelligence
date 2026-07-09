@@ -1,0 +1,21 @@
+{
+  "ring_id": 92,
+  "status": "DRAFT \u2014 PENDING HUMAN REVIEW",
+  "generated_at": "2026-07-09T02:39:47.983537+00:00",
+  "model": "qwen/qwen3-32b",
+  "agent_steps": 6,
+  "tool_calling_turns": 2,
+  "verdict": {
+    "typology": "GATHER-SCATTER",
+    "confidence": 0.99,
+    "summary": "Funds consolidate into hub account 19329_808B1C350 from 12 sources before dispersing to 7 destinations. The $149,134.59 moved across USD/EUR/AUD in 8 days shows rapid aggregation and distribution through a central node.",
+    "key_evidence": [
+      "Hub account 19329_808B1C350 receives $83,340.53 from 12 accounts (e.g., $18,336.63 from 12004_801C152A0)",
+      "Same hub disperses $83,340.53 to 7 accounts (e.g., $19,551.02 to 1412_809F49D20)",
+      "All transactions occur within 8-day window (Sep 6-14 2022) via ACH format",
+      "High GNN score of 0.9906 indicates strong structural suspiciousness"
+    ],
+    "recommendation": "file_sar"
+  },
+  "narrative": "```json\n{\n  \"typology\": \"GATHER-SCATTER\",\n  \"confidence\": 0.99,\n  \"summary\": \"Funds consolidate into hub account 19329_808B1C350 from 12 sources before dispersing to 7 destinations. The $149,134.59 moved across USD/EUR/AUD in 8 days shows rapid aggregation and distribution through a central node.\",\n  \"key_evidence\": [\n    \"Hub account 19329_808B1C350 receives $83,340.53 from 12 accounts (e.g., $18,336.63 from 12004_801C152A0)\",\n    \"Same hub disperses $83,340.53 to 7 accounts (e.g., $19,551.02 to 1412_809F49D20)\",\n    \"All transactions occur within 8-day window (Sep 6-14 2022) via ACH format\",\n    \"High GNN score of 0.9906 indicates strong structural suspiciousness\"\n  ],\n  \"recommendation\": \"file_sar\"\n}\n```"
+}

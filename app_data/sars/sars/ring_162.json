@@ -1,0 +1,21 @@
+{
+  "ring_id": 162,
+  "status": "DRAFT \u2014 PENDING HUMAN REVIEW",
+  "generated_at": "2026-07-09T02:58:44.830757+00:00",
+  "model": "qwen/qwen3-32b",
+  "agent_steps": 8,
+  "tool_calling_turns": 3,
+  "verdict": {
+    "typology": "FAN-IN",
+    "confidence": 0.92,
+    "summary": "The ring exhibits a classic FAN-IN pattern, with 11/12 accounts funneling funds into a single central account (25866_80E27AA10). This account received 9 transactions totaling $133,920.13 (93% of total ring volume) from dispersed sources.",
+    "key_evidence": [
+      "25866_80E27AA10 received funds from 9 distinct accounts (in_deg=9)",
+      "Largest single inflow: $89,127.94 from 19477_80DB25390",
+      "11 of 12 accounts have out_deg=1 targeting 25866_80E27AA10",
+      "No outflows detected from central account (out_deg=0)"
+    ],
+    "recommendation": "file_sar"
+  },
+  "narrative": "```json\n{\n  \"typology\": \"FAN-IN\",\n  \"confidence\": 0.92,\n  \"summary\": \"The ring exhibits a classic FAN-IN pattern, with 11/12 accounts funneling funds into a single central account (25866_80E27AA10). This account received 9 transactions totaling $133,920.13 (93% of total ring volume) from dispersed sources.\",\n  \"key_evidence\": [\n    \"25866_80E27AA10 received funds from 9 distinct accounts (in_deg=9)\",\n    \"Largest single inflow: $89,127.94 from 19477_80DB25390\",\n    \"11 of 12 accounts have out_deg=1 targeting 25866_80E27AA10\",\n    \"No outflows detected from central account (out_deg=0)\"\n  ],\n  \"recommendation\": \"file_sar\"\n}\n```"
+}

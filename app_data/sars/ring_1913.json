@@ -1,0 +1,20 @@
+{
+  "ring_id": 1913,
+  "status": "DRAFT \u2014 PENDING HUMAN REVIEW",
+  "generated_at": "2026-07-09T03:12:51.594558+00:00",
+  "model": "qwen/qwen3-32b",
+  "agent_steps": 8,
+  "tool_calling_turns": 3,
+  "verdict": {
+    "typology": "FAN-IN",
+    "confidence": 0.3,
+    "summary": "Two accounts (23402_802BD16C0 and 27444_802BD58D0) funneled funds into a single account (14549_802BD56A0) within a 2-minute window. Total amount was $4,198.69 via ACH, with no outgoing transactions from the receiving account.",
+    "key_evidence": [
+      "23402_802BD16C0 \u2192 14549_802BD56A0: $3,537.46 (1 tx)",
+      "27444_802BD58D0 \u2192 14549_802BD56A0: $661.23 (1 tx)",
+      "Account 14549_802BD56A0 has 2 in-degrees but 0 out-degrees"
+    ],
+    "recommendation": "dismiss"
+  },
+  "narrative": "```json\n{\n  \"typology\": \"FAN-IN\",\n  \"confidence\": 0.3,\n  \"summary\": \"Two accounts (23402_802BD16C0 and 27444_802BD58D0) funneled funds into a single account (14549_802BD56A0) within a 2-minute window. Total amount was $4,198.69 via ACH, with no outgoing transactions from the receiving account.\",\n  \"key_evidence\": [\n    \"23402_802BD16C0 \u2192 14549_802BD56A0: $3,537.46 (1 tx)\",\n    \"27444_802BD58D0 \u2192 14549_802BD56A0: $661.23 (1 tx)\",\n    \"Account 14549_802BD56A0 has 2 in-degrees but 0 out-degrees\"\n  ],\n  \"recommendation\": \"dismiss\"\n}\n```"
+}

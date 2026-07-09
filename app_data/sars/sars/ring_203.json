@@ -1,0 +1,20 @@
+{
+  "ring_id": 203,
+  "status": "DRAFT \u2014 PENDING HUMAN REVIEW",
+  "generated_at": "2026-07-09T02:39:00.465145+00:00",
+  "model": "qwen/qwen3-32b",
+  "agent_steps": 6,
+  "tool_calling_turns": 2,
+  "verdict": {
+    "typology": "GATHER-SCATTER",
+    "confidence": 0.95,
+    "summary": "Funds consolidate into hub account 211_808E44B10 from multiple sources before dispersing to 8 different accounts. The hub received \u20ac7,924.37, \u00a35,754.73, and $9,169.69 over 9 days, then scattered $18,533.55 and $11,900.42 in outbound payments.",
+    "key_evidence": [
+      "Hub account 211_808E44B10 received 14 transactions totaling $9,169.69 from 220504_808396D50",
+      "Largest outbound transfers from hub: $18,533.55 to 3144_809478870 and $11,900.42 to 23555_80BA57230",
+      "Account 211_808E44B10 serves as both fan-in hub (receiving 6 unique senders) and fan-out hub (sending to 8 unique recipients)"
+    ],
+    "recommendation": "file_sar"
+  },
+  "narrative": "```json\n{\n  \"typology\": \"GATHER-SCATTER\",\n  \"confidence\": 0.95,\n  \"summary\": \"Funds consolidate into hub account 211_808E44B10 from multiple sources before dispersing to 8 different accounts. The hub received \u20ac7,924.37, \u00a35,754.73, and $9,169.69 over 9 days, then scattered $18,533.55 and $11,900.42 in outbound payments.\",\n  \"key_evidence\": [\n    \"Hub account 211_808E44B10 received 14 transactions totaling $9,169.69 from 220504_808396D50\",\n    \"Largest outbound transfers from hub: $18,533.55 to 3144_809478870 and $11,900.42 to 23555_80BA57230\",\n    \"Account 211_808E44B10 serves as both fan-in hub (receiving 6 unique senders) and fan-out hub (sending to 8 unique recipients)\"\n  ],\n  \"recommendation\": \"file_sar\"\n}\n```"
+}

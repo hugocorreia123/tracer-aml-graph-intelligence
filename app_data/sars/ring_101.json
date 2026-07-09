@@ -1,0 +1,21 @@
+{
+  "ring_id": 101,
+  "status": "DRAFT \u2014 PENDING HUMAN REVIEW",
+  "generated_at": "2026-07-09T03:12:07.006680+00:00",
+  "model": "qwen/qwen3-32b",
+  "agent_steps": 8,
+  "tool_calling_turns": 3,
+  "verdict": {
+    "typology": "GATHER-SCATTER",
+    "confidence": 0.75,
+    "summary": "Funds consolidate into accounts 5365_8025DCE40 and 6052_8027DE880 via multiple upstream sources, then disperse through layered transactions to 40653_80F61C2F0 and downstream accounts. The 10-day timeframe and lack of direct cycles suggest structured layering.",
+    "key_evidence": [
+      "Account 5365_8025DCE40 receives \u20ac15,660.29 from 23_8025DC810 and CHF 11,477.04 from 22806_8027EC510",
+      "Account 40653_80F61C2F0 sends \u00a564,722.01 to 40836_80F653A20 (largest single flow)",
+      "Account 6052_8027DE880 aggregates $1,689.15 + $530.27 + $283.81 from three sources",
+      "No cycles detected in 13-edge network, but 4\u21923\u21922\u21921 transaction chaining observed"
+    ],
+    "recommendation": "file_sar"
+  },
+  "narrative": "```json\n{\n  \"typology\": \"GATHER-SCATTER\",\n  \"confidence\": 0.75,\n  \"summary\": \"Funds consolidate into accounts 5365_8025DCE40 and 6052_8027DE880 via multiple upstream sources, then disperse through layered transactions to 40653_80F61C2F0 and downstream accounts. The 10-day timeframe and lack of direct cycles suggest structured layering.\",\n  \"key_evidence\": [\n    \"Account 5365_8025DCE40 receives \u20ac15,660.29 from 23_8025DC810 and CHF 11,477.04 from 22806_8027EC510\",\n    \"Account 40653_80F61C2F0 sends \u00a564,722.01 to 40836_80F653A20 (largest single flow)\",\n    \"Account 6052_8027DE880 aggregates $1,689.15 + $530.27 + $283.81 from three sources\",\n    \"No cycles detected in 13-edge network, but 4\u21923\u21922\u21921 transaction chaining observed\"\n  ],\n  \"recommendation\": \"file_sar\"\n}\n```"
+}
