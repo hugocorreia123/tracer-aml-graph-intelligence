@@ -1,90 +1,125 @@
+---
+title: Tracer — AML Graph Intelligence
+emoji: 🕸️
+colorFrom: red
+colorTo: gray
+sdk: streamlit
+sdk_version: "1.41.0"
+app_file: app.py
+pinned: false
+license: apache-2.0
+---
+
 # Tracer — AML Graph Intelligence
 
-**Graph neural networks that detect money-laundering *rings* in transaction networks, plus an agentic investigator that drafts the case file.**
+**Graph neural networks that detect money-laundering rings in transaction networks — and an agentic investigator that drafts the case file, with every claim measured.**
 
-![status](https://img.shields.io/badge/status-in__progress-F9A826) ![python](https://img.shields.io/badge/python-3.11-blue) ![license](https://img.shields.io/badge/license-Apache--2.0-green)
+![python](https://img.shields.io/badge/python-3.11-blue) ![pytorch-geometric](https://img.shields.io/badge/PyTorch_Geometric-GraphSAGE-EE4C2C) ![langgraph](https://img.shields.io/badge/LangGraph-ReAct_agent-2D3748) ![license](https://img.shields.io/badge/license-Apache--2.0-green)
 
-> 🚧 **Work in progress** — built in public, phase by phase. Numbers below are verified as of Phase 0; findings land as each phase ships.
+**[Live demo](https://huggingface.co/spaces/hugocorreia123/tracer-aml-graph-intelligence)** · **[Code](https://github.com/hugocorreia123/tracer-aml-graph-intelligence)**
 
 ---
 
-## Why
+## Results
 
-Rules-based AML looks at one transaction at a time — and drowns analysts in noise: industry false-positive rates run **85–95%**, and global AML compliance costs exceed **$270B a year**. But real laundering is a *network*: smurfing, layering, cycles, fan-in/fan-out between accounts. Per-transaction systems structurally cannot see a ring.
-
-**Tracer attacks both halves of the problem:**
-
-1. A **graph neural network** scores accounts inside the transaction *graph* and surfaces laundering **rings**, not isolated alerts.
-2. An **agentic investigator** (LLM + graph tools) takes each flagged ring, identifies the laundering *typology*, and drafts the **Suspicious Activity Report** — with a human-in-the-loop gate. *AI suggests; the human decides and files.*
-
-This is a laundering **CYCLE** hiding inside ordinary traffic — the thing Tracer exists to find:
+| Claim | Evidence |
+|---|---|
+| **Graph structure beats tabular ML at detecting laundering** | GraphSAGE test PR-AUC **0.519** vs LightGBM **0.371** (**+40%**) — identical features, identical split; the lift is attributable to the network alone |
+| **47% fewer false positives at the same catch rate** | At 70% recall: 5,169 FP vs 9,745 FP on the test set — **4,576 wasted investigations avoided** (≈$1.3–3.0M/yr illustrative at 100K alerts, $30–70/alert) |
+| **The AI investigator infers laundering typology from raw structure** | 8-way typology identified labels-blind at **3× random**; **0/8 weak rings wrongly escalated** to SAR filing |
+| **SAR quality is measured, not asserted** | Factual groundedness scored by a cross-family LLM judge, **validated against blind human labels: Cohen's κ = 0.942** (n=31, 96.8% raw agreement) |
+| **The human-review gate is justified by data** | Agent narratives contain arithmetic or directional errors in **~2/3 of drafts** (judge-verified, human-validated) — the measured reason review is architectural, not decorative |
 
 ![A money-laundering cycle (red) hidden in legitimate transaction flows (grey)](docs/first_ring.png)
 
-## Data
+## The problem
 
-[IBM AMLworld](https://www.kaggle.com/datasets/ealtman2019/ibm-transactions-for-anti-money-laundering-aml) (HI-Small split) — **synthetic** bank transactions with labeled laundering patterns. No real customer data.
+Rules-based AML inspects one transaction at a time and drowns analysts in noise: industry false-positive rates run **85–95%**, global AML compliance costs exceed **$270B a year**, and banks have paid **$45B+ in fines** since 2000. Real laundering, however, is a *network* — smurfing, layering, cycles, fan-in/fan-out across accounts. Per-transaction systems structurally cannot see a ring.
 
-Verified Phase 0 numbers:
-
-| | |
-|---|---|
-| Transactions | 5,078,345 over 18 days |
-| Accounts (graph nodes) | 515,088 — node ID = *(bank, account)* composite |
-| Unique directed edges | 1,015,736 (72% in one weakly-connected component) |
-| Illicit transactions | 5,177 (**0.10%**) |
-| Illicit accounts | 6,357 (**1.23%**) |
-| Labeled laundering attempts | **370**, across all **8 typologies** (cycle, fan-in, fan-out, gather-scatter, scatter-gather, bipartite, stack, random) |
-| Ground-truth join | patterns ↔ transactions: **3,170 / 3,170 accounts (100%)** |
-
-## Architecture
+## The system
 
 ```
-Transactions ──► Account–transaction GRAPH ──► GNN node scorer (PyG)
-                                                    │ suspicion scores
-                                                    ▼
-                    Suspicious SUBGRAPHS (rings) + typology motifs
-                                                    │
-                                                    ▼
-                    Agentic INVESTIGATOR (LangGraph): evidence → typology → SAR draft
-                                                    │
-                                                    ▼
-                    Human review  ·  AI suggests, human decides & files
+Transactions ──► Account–transaction GRAPH ──► GraphSAGE node scorer (PyG)
+                                                     │  suspicion scores
+                                                     ▼
+                     Suspicious SUBGRAPHS → ≤60-account RINGS (recursive Louvain)
+                                                     │
+                                                     ▼
+                     ReAct INVESTIGATOR (LangGraph + Groq): evidence tools →
+                     typology inference → SAR draft + confidence + recommendation
+                                                     │
+                                                     ▼
+                     HUMAN REVIEW · AI suggests — a human decides and files
 ```
 
-**Stack:** Python · PyTorch + PyTorch Geometric · networkx · LightGBM (baseline) · LangGraph + Groq · FastAPI · Streamlit + Plotly · Docker · HF Spaces
+1. **Detect.** 5.08M synthetic bank transactions (IBM AMLworld HI-Small) become a **515,088-account directed graph**; a 3-layer GraphSAGE scores every account. Thresholded at the 70%-recall operating point.
+2. **Extract.** Flagged accounts are grouped into suspicious subgraphs and recursively decomposed (Louvain) into **3,058 investigable rings (≤60 accounts)** with structural motifs — cycles, fan-in/out hubs, gather-scatter hubs.
+3. **Investigate.** A ReAct agent (qwen3-32b) queries each ring through evidence tools — flows, degree structure, account profiles; **typology labels are withheld** — and drafts a Suspicious Activity Report: typology, confidence, key evidence, recommendation (`file_sar` / `monitor` / `dismiss`).
+4. **Review.** Every draft is stamped **PENDING HUMAN REVIEW**. The measured error rate (below) is why.
 
-## Roadmap
+## Evaluation
 
-- [x] **Phase 0 — Data + graph**: HI-Small pipeline, composite node IDs, 8-typology pattern parsing (100% ground-truth join), graph stats, first ring visualization
-- [x] **Phase 1 — Tabular baseline**: per-account features → LightGBM, PR-AUC (the honest control the GNN must beat) — **test PR-AUC 0.371**
-- [x] **Phase 2 — First GNN**: GraphSAGE node classifier vs. baseline on the same split — **test PR-AUC 0.503 (+36% over baseline)**
-- [x] **Phase 3 — Stronger detector**: tuned 3-layer GraphSAGE — **test PR-AUC 0.519 (+40% vs tabular)**; GATv2 tried and *underperformed* (0.492 at 2× the compute); **47% fewer false positives at 70% recall** (≈$1.3–3.0M/yr illustrative at 100K alerts)
-- [x] **Phase 4 — Ring extraction**: flagged subgraphs → recursive Louvain decomposition into **3,058 investigable rings (≤60 accounts)**; **60.3% of labeled attempts covered** (86.5% at raw component level — coverage/investigability tradeoff); cycles & fans well covered, STACK/BIPARTITE are the blind spot
-- [x] **Phase 5 — Agentic SAR investigator**: LangGraph ReAct agent (qwen3-32b) infers laundering typology from raw flows/structure (labels withheld), drafts SARs with calibrated recommendations — strong FAN-IN ring → file_sar @ 0.85; weak ring → monitor @ 0.35. All drafts stamped PENDING HUMAN REVIEW
-- [x] **Phase 6 — Evaluation**: typology inferred labels-blind at 3× random (8-way); **0/8 weak rings wrongly escalated**; SAR groundedness 0.565 — narratives contain arithmetic/directional errors in ~2/3 of drafts, judged by cross-family LLM-as-judge **validated against blind human labels at Cohen's κ = 0.942 (n=31)**. The measured error rate is the argument for the human-review gate.
-- [x] **Phase 7 — Serving (slim)**: FastAPI — ranked ring queue, account scoring, on-demand SAR drafting with caching and PENDING HUMAN REVIEW stamps. (Full MLOps stack — monitoring, drift, load-testing — demonstrated in Sentinel.)
-- [ ] **Phase 8 — Demo**: interactive ring explorer + SAR panel on HF Spaces
-- [ ] **Phase 9 — Findings-first README**
+**Detector — controlled comparison.** One fixed stratified split (60/20/20 by account, seed 42) is shared by every model. The LightGBM baseline gets the same 26 behavioral features as the GNN, so the only variable is graph structure.
 
-## Reproduce Phase 0
+| model | test PR-AUC | note |
+|---|---|---|
+| random | 0.012 | 1.23% illicit accounts |
+| LightGBM (tabular) | 0.371 | honest, tuned control |
+| GraphSAGE, 2-layer | 0.503 | +36% |
+| **GraphSAGE, 3-layer tuned** | **0.519** | **+40% — champion** |
+| GATv2 | 0.492 | negative result: attention underperformed at 2× compute |
+
+**Operating point.** At every recall level 50–80%, the GNN needs roughly half the alerts of the baseline. At 70% recall it cuts false positives **47%**.
+
+**Ring extraction vs ground truth.** Rings cover **60.3%** of the 370 labeled laundering attempts at investigable granularity (86.5% at raw component level — a measured coverage/investigability tradeoff). Cycles and fan patterns are well covered; diffuse STACK/BIPARTITE structures are the blind spot.
+
+**Investigator.** On a stratified eval set (24 ground-truth-matched rings across all 8 typologies + 8 weak controls): typology inferred labels-blind at **3× random**; errors concentrate in structurally adjacent pairs (SCATTER-GATHER ↔ GATHER-SCATTER); **0/8 weak rings wrongly escalated**. SAR factual groundedness (mean **0.565**) was scored by a cross-family judge (gpt-oss-120b auditing qwen3-32b — no self-preference) and the judge itself validated against **blind human labels: κ = 0.942**. The dominant failure mode is precise: correct structural reasoning, unreliable arithmetic and occasional direction flips in narratives — quantified justification for the human gate.
+
+## Key findings
+
+1. **Network structure is real signal:** +40% PR-AUC over an identical-feature tabular model — the entire lift comes from the graph.
+2. **Ranking beats reweighting:** class weighting *hurt* PR-AUC for LightGBM (collapsed to a 1-tree model) and was tuned down for the GNN.
+3. **Attention was not worth it here:** GATv2 lost to tuned GraphSAGE at double the compute — measured, reported.
+4. **Investigability costs coverage:** forcing rings to SAR-able size (≤60 accounts) drops attempt coverage from 86.5% to 60.3%, concentrated in diffuse typologies.
+5. **LLM investigators reason well and calculate badly:** structure inferred at 3× random with zero over-escalation, but ~2/3 of narratives contain factual slips — the strongest argument for human-in-the-loop, backed by a κ=0.94-validated measurement.
+
+## Stack
+
+Python 3.11 · PyTorch + **PyTorch Geometric** (GraphSAGE, GATv2) · LightGBM · networkx · **LangGraph** + Groq (qwen3-32b agent, gpt-oss-120b judge) · FastAPI · Streamlit + Plotly · uv · Hugging Face Spaces
+
+## Reproduce
 
 ```bash
 git clone https://github.com/hugocorreia123/tracer-aml-graph-intelligence
-cd tracer-aml-graph-intelligence
-uv sync
-# Kaggle API token required (~/.kaggle/kaggle.json), then download HI-Small files to data/raw/
+cd tracer-aml-graph-intelligence && uv sync
+
+# data (Kaggle API token required)
 uv run kaggle datasets download ealtman2019/ibm-transactions-for-anti-money-laundering-aml -f HI-Small_Trans.csv -p data/raw
 uv run kaggle datasets download ealtman2019/ibm-transactions-for-anti-money-laundering-aml -f HI-Small_Patterns.txt -p data/raw
 uv run kaggle datasets download ealtman2019/ibm-transactions-for-anti-money-laundering-aml -f HI-Small_accounts.csv -p data/raw
-uv run python scripts/build_graph.py
-uv run python scripts/visualize_ring.py
+
+uv run python scripts/build_graph.py        # graph + typology ground truth
+uv run python scripts/make_features.py      # features + canonical split
+uv run python scripts/train_baseline.py     # LightGBM control (PR-AUC 0.371)
+uv run python scripts/build_pyg_graph.py    # PyG tensor
+uv run python scripts/train_v2.py --name sage_tuned --arch sage --layers 3 --hidden 256 --lr 3e-3 --pos-weight 5
+uv run python scripts/operating_point.py    # FP reduction @ fixed recall
+uv run python scripts/extract_rings.py      # 3,058 rings + motifs
+uv run python scripts/investigate.py --top 5   # agentic SARs (GROQ_API_KEY)
+uv run python scripts/eval_investigator.py  # typology accuracy
+uv run python scripts/judge_sars.py         # groundedness judge
+uv run python scripts/label_sars.py         # blind labels + Cohen's kappa
+uv run streamlit run app.py                 # demo
 ```
 
-## Related work by me
+## Scope & limitations
 
-Tracer is the network-level counterpart to [**Sentinel**](https://github.com/hugocorreia123/sentinel-fraud-mlops) (transaction-level fraud MLOps) and reuses the judge-validation methodology from [**Voyager**](https://github.com/hugocorreia123/voyager) (agent evaluation, Cohen's κ = 0.95).
+Synthetic data (no real customer data — by design); single training seed (multi-seed variance is future work); ring decomposition trades coverage of diffuse typologies for investigability; FX normalization uses fixed approximate 2022 rates; the illustrative ROI scaling assumes the test-set FP-reduction rate transfers.
+
+## Related work
+
+Tracer is the **network-level** counterpart to [Sentinel](https://github.com/hugocorreia123/sentinel-fraud-mlops) (transaction-level fraud MLOps: MLflow, shadow A/B, Prometheus/Grafana) and reuses the judge-validation methodology from [Voyager](https://github.com/hugocorreia123/voyager) (agent-topology evaluation, κ = 0.95). Together they form a financial-crime detection portfolio spanning transaction, network, and agentic layers.
 
 ---
 
-*Hugo Correia — [LinkedIn](https://www.linkedin.com/in/hugogncorreia) · Data Scientist / ML & AI Engineer, Lisbon*
+**Hugo Correia** — Data Scientist / ML & AI Engineer, Lisbon · [LinkedIn](https://www.linkedin.com/in/hugogncorreia) · [GitHub](https://github.com/hugocorreia123)
