@@ -62,7 +62,7 @@ Transactions ──► Account–transaction GRAPH ──► GNN node scorer (Py
 - [x] **Phase 3 — Stronger detector**: tuned 3-layer GraphSAGE — **test PR-AUC 0.519 (+40% vs tabular)**; GATv2 tried and *underperformed* (0.492 at 2× the compute); **47% fewer false positives at 70% recall** (≈$1.3–3.0M/yr illustrative at 100K alerts)
 - [x] **Phase 4 — Ring extraction**: flagged subgraphs → recursive Louvain decomposition into **3,058 investigable rings (≤60 accounts)**; **60.3% of labeled attempts covered** (86.5% at raw component level — coverage/investigability tradeoff); cycles & fans well covered, STACK/BIPARTITE are the blind spot
 - [x] **Phase 5 — Agentic SAR investigator**: LangGraph ReAct agent (qwen3-32b) infers laundering typology from raw flows/structure (labels withheld), drafts SARs with calibrated recommendations — strong FAN-IN ring → file_sar @ 0.85; weak ring → monitor @ 0.35. All drafts stamped PENDING HUMAN REVIEW
-- [ ] **Phase 6 — Evaluation**: detection metrics per typology; SAR quality via cross-family LLM-as-judge validated against blind human labels (Cohen's κ)
+- [x] **Phase 6 — Evaluation**: typology inferred labels-blind at 3× random (8-way); **0/8 weak rings wrongly escalated**; SAR groundedness 0.565 — narratives contain arithmetic/directional errors in ~2/3 of drafts, judged by cross-family LLM-as-judge **validated against blind human labels at Cohen's κ = 0.942 (n=31)**. The measured error rate is the argument for the human-review gate.
 - [ ] **Phase 7 — Serving + monitoring**: FastAPI scoring, drift/volume monitoring
 - [ ] **Phase 8 — Demo**: interactive ring explorer + SAR panel on HF Spaces
 - [ ] **Phase 9 — Findings-first README**
