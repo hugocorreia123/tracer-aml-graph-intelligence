@@ -1,0 +1,18 @@
+{
+  "flagged_accounts": 30294,
+  "candidate_rings": 3058,
+  "attempts_total": 370,
+  "attempts_covered_50pct": 223,
+  "attempt_coverage": 0.6027027027027027,
+  "ring_node_purity": 0.2550575684641905,
+  "coverage_by_typology": {
+    "BIPARTITE": "10/49",
+    "CYCLE": "42/54",
+    "FAN-IN": "30/40",
+    "FAN-OUT": "37/48",
+    "GATHER-SCATTER": "36/51",
+    "RANDOM": "26/41",
+    "SCATTER-GATHER": "33/44",
+    "STACK": "9/43"
+  }
+}
