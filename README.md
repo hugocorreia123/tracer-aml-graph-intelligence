@@ -1,22 +1,10 @@
----
-title: Tracer — AML Graph Intelligence
-emoji: 🕸️
-colorFrom: red
-colorTo: gray
-sdk: streamlit
-sdk_version: "1.41.0"
-app_file: app.py
-pinned: false
-license: apache-2.0
----
-
 # Tracer — AML Graph Intelligence
 
 **Graph neural networks that detect money-laundering rings in transaction networks — and an agentic investigator that drafts the case file, with every claim measured.**
 
 ![python](https://img.shields.io/badge/python-3.11-blue) ![pytorch-geometric](https://img.shields.io/badge/PyTorch_Geometric-GraphSAGE-EE4C2C) ![langgraph](https://img.shields.io/badge/LangGraph-ReAct_agent-2D3748) ![license](https://img.shields.io/badge/license-Apache--2.0-green)
 
-**[Live demo](https://huggingface.co/spaces/hugocorreia123/tracer-aml-graph-intelligence)** · **[Code](https://github.com/hugocorreia123/tracer-aml-graph-intelligence)**
+**[Live demo](https://tracer-aml-graph-intelligence.streamlit.app)** · **[Code](https://github.com/hugocorreia123/tracer-aml-graph-intelligence)**
 
 ---
 
@@ -30,7 +18,7 @@ license: apache-2.0
 | **SAR quality is measured, not asserted** | Factual groundedness scored by a cross-family LLM judge, **validated against blind human labels: Cohen's κ = 0.942** (n=31, 96.8% raw agreement) |
 | **The human-review gate is justified by data** | Agent narratives contain arithmetic or directional errors in **~2/3 of drafts** (judge-verified, human-validated) — the measured reason review is architectural, not decorative |
 
-![A money-laundering cycle (red) hidden in legitimate transaction flows (grey)](docs/first_ring.png)
+![Tracer demo — a GATHER-SCATTER ring in the network view with its AI-drafted SAR pending human review](docs/demo_ring_explorer.png)
 
 ## The problem
 
@@ -56,6 +44,16 @@ Transactions ──► Account–transaction GRAPH ──► GraphSAGE node scor
 2. **Extract.** Flagged accounts are grouped into suspicious subgraphs and recursively decomposed (Louvain) into **3,058 investigable rings (≤60 accounts)** with structural motifs — cycles, fan-in/out hubs, gather-scatter hubs.
 3. **Investigate.** A ReAct agent (qwen3-32b) queries each ring through evidence tools — flows, degree structure, account profiles; **typology labels are withheld** — and drafts a Suspicious Activity Report: typology, confidence, key evidence, recommendation (`file_sar` / `monitor` / `dismiss`).
 4. **Review.** Every draft is stamped **PENDING HUMAN REVIEW**. The measured error rate (below) is why.
+
+## Demo
+
+The interactive ring explorer: pick a flagged ring, see the money move, read the drafted SAR.
+
+![Evaluation dashboard — detector comparison, FP reduction at fixed recall, investigator metrics](docs/demo_results.png)
+
+A laundering **CYCLE** hiding in ordinary traffic — the thing per-transaction systems structurally cannot see:
+
+![A money-laundering cycle (red) hidden in legitimate transaction flows (grey)](docs/first_ring.png)
 
 ## Evaluation
 
@@ -85,7 +83,7 @@ Transactions ──► Account–transaction GRAPH ──► GraphSAGE node scor
 
 ## Stack
 
-Python 3.11 · PyTorch + **PyTorch Geometric** (GraphSAGE, GATv2) · LightGBM · networkx · **LangGraph** + Groq (qwen3-32b agent, gpt-oss-120b judge) · FastAPI · Streamlit + Plotly · uv · Hugging Face Spaces
+Python 3.11 · PyTorch + **PyTorch Geometric** (GraphSAGE, GATv2) · LightGBM · networkx · **LangGraph** + Groq (qwen3-32b agent, gpt-oss-120b judge) · FastAPI · Streamlit + Plotly · uv · Streamlit Community Cloud
 
 ## Reproduce
 
