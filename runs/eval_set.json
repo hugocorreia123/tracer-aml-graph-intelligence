@@ -1,0 +1,130 @@
+[
+  {
+    "ring_id": 10,
+    "truth": "BIPARTITE"
+  },
+  {
+    "ring_id": 791,
+    "truth": "BIPARTITE"
+  },
+  {
+    "ring_id": 2244,
+    "truth": "BIPARTITE"
+  },
+  {
+    "ring_id": 802,
+    "truth": "CYCLE"
+  },
+  {
+    "ring_id": 1194,
+    "truth": "CYCLE"
+  },
+  {
+    "ring_id": 355,
+    "truth": "CYCLE"
+  },
+  {
+    "ring_id": 197,
+    "truth": "FAN-IN"
+  },
+  {
+    "ring_id": 119,
+    "truth": "FAN-IN"
+  },
+  {
+    "ring_id": 162,
+    "truth": "FAN-IN"
+  },
+  {
+    "ring_id": 190,
+    "truth": "FAN-OUT"
+  },
+  {
+    "ring_id": 161,
+    "truth": "FAN-OUT"
+  },
+  {
+    "ring_id": 62,
+    "truth": "FAN-OUT"
+  },
+  {
+    "ring_id": 72,
+    "truth": "GATHER-SCATTER"
+  },
+  {
+    "ring_id": 70,
+    "truth": "GATHER-SCATTER"
+  },
+  {
+    "ring_id": 92,
+    "truth": "GATHER-SCATTER"
+  },
+  {
+    "ring_id": 1560,
+    "truth": "RANDOM"
+  },
+  {
+    "ring_id": 311,
+    "truth": "RANDOM"
+  },
+  {
+    "ring_id": 534,
+    "truth": "RANDOM"
+  },
+  {
+    "ring_id": 68,
+    "truth": "SCATTER-GATHER"
+  },
+  {
+    "ring_id": 98,
+    "truth": "SCATTER-GATHER"
+  },
+  {
+    "ring_id": 22,
+    "truth": "SCATTER-GATHER"
+  },
+  {
+    "ring_id": 1079,
+    "truth": "STACK"
+  },
+  {
+    "ring_id": 1439,
+    "truth": "STACK"
+  },
+  {
+    "ring_id": 101,
+    "truth": "STACK"
+  },
+  {
+    "ring_id": 2485,
+    "truth": null
+  },
+  {
+    "ring_id": 1913,
+    "truth": null
+  },
+  {
+    "ring_id": 2354,
+    "truth": null
+  },
+  {
+    "ring_id": 1104,
+    "truth": null
+  },
+  {
+    "ring_id": 1690,
+    "truth": null
+  },
+  {
+    "ring_id": 1830,
+    "truth": null
+  },
+  {
+    "ring_id": 1705,
+    "truth": null
+  },
+  {
+    "ring_id": 2772,
+    "truth": null
+  }
+]

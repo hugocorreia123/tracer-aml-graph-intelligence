@@ -1,0 +1,16 @@
+{
+  "n": 31,
+  "raw_agreement": 0.967741935483871,
+  "kappa": 0.9420560747663552,
+  "human_mean_score": 0.5483870967741935,
+  "judge_mean_score": 0.5645161290322581,
+  "confusion": {
+    "UNGROUNDED->UNGROUNDED": 4,
+    "PARTIALLY_GROUNDED->PARTIALLY_GROUNDED": 18,
+    "GROUNDED->GROUNDED": 8,
+    "UNGROUNDED->PARTIALLY_GROUNDED": 1
+  },
+  "disagreements": [
+    101
+  ]
+}

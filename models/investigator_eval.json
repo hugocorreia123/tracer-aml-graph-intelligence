@@ -1,0 +1,233 @@
+{
+  "typology_accuracy": 0.375,
+  "n_matched": 24,
+  "correct": 9,
+  "weak_escalated": 0,
+  "n_weak": 8,
+  "rows": [
+    {
+      "ring_id": 10,
+      "truth": "BIPARTITE",
+      "pred": "CYCLE",
+      "confidence": 0.92,
+      "rec": "file_sar"
+    },
+    {
+      "ring_id": 791,
+      "truth": "BIPARTITE",
+      "pred": "FAN-OUT",
+      "confidence": 0.65,
+      "rec": "monitor"
+    },
+    {
+      "ring_id": 2244,
+      "truth": "BIPARTITE",
+      "pred": "?",
+      "confidence": null,
+      "rec": null
+    },
+    {
+      "ring_id": 802,
+      "truth": "CYCLE",
+      "pred": "MIXED",
+      "confidence": 0.8,
+      "rec": "file_sar"
+    },
+    {
+      "ring_id": 1194,
+      "truth": "CYCLE",
+      "pred": "FAN-OUT",
+      "confidence": 0.8,
+      "rec": "file_sar"
+    },
+    {
+      "ring_id": 355,
+      "truth": "CYCLE",
+      "pred": "CYCLE",
+      "confidence": 0.92,
+      "rec": "file_sar"
+    },
+    {
+      "ring_id": 197,
+      "truth": "FAN-IN",
+      "pred": "FAN-IN",
+      "confidence": 0.93,
+      "rec": "file_sar"
+    },
+    {
+      "ring_id": 119,
+      "truth": "FAN-IN",
+      "pred": "FAN-IN",
+      "confidence": 0.92,
+      "rec": "file_sar"
+    },
+    {
+      "ring_id": 162,
+      "truth": "FAN-IN",
+      "pred": "FAN-IN",
+      "confidence": 0.92,
+      "rec": "file_sar"
+    },
+    {
+      "ring_id": 190,
+      "truth": "FAN-OUT",
+      "pred": "GATHER-SCATTER",
+      "confidence": 0.95,
+      "rec": "file_sar"
+    },
+    {
+      "ring_id": 161,
+      "truth": "FAN-OUT",
+      "pred": "FAN-OUT",
+      "confidence": 0.95,
+      "rec": "file_sar"
+    },
+    {
+      "ring_id": 62,
+      "truth": "FAN-OUT",
+      "pred": "FAN-OUT",
+      "confidence": 0.91,
+      "rec": "file_sar"
+    },
+    {
+      "ring_id": 72,
+      "truth": "GATHER-SCATTER",
+      "pred": "GATHER-SCATTER",
+      "confidence": 0.99,
+      "rec": "file_sar"
+    },
+    {
+      "ring_id": 70,
+      "truth": "GATHER-SCATTER",
+      "pred": "GATHER-SCATTER",
+      "confidence": 0.99,
+      "rec": "file_sar"
+    },
+    {
+      "ring_id": 92,
+      "truth": "GATHER-SCATTER",
+      "pred": "GATHER-SCATTER",
+      "confidence": 0.99,
+      "rec": "file_sar"
+    },
+    {
+      "ring_id": 1560,
+      "truth": "RANDOM",
+      "pred": "MIXED",
+      "confidence": 0.45,
+      "rec": "dismiss"
+    },
+    {
+      "ring_id": 311,
+      "truth": "RANDOM",
+      "pred": "MIXED",
+      "confidence": 0.7,
+      "rec": "monitor"
+    },
+    {
+      "ring_id": 534,
+      "truth": "RANDOM",
+      "pred": "FAN-OUT",
+      "confidence": 0.85,
+      "rec": "file_sar"
+    },
+    {
+      "ring_id": 68,
+      "truth": "SCATTER-GATHER",
+      "pred": "GATHER-SCATTER",
+      "confidence": 0.88,
+      "rec": "file_sar"
+    },
+    {
+      "ring_id": 98,
+      "truth": "SCATTER-GATHER",
+      "pred": "FAN-IN",
+      "confidence": 0.92,
+      "rec": "file_sar"
+    },
+    {
+      "ring_id": 22,
+      "truth": "SCATTER-GATHER",
+      "pred": "FAN-OUT / FAN-IN",
+      "confidence": 0.85,
+      "rec": "file_sar"
+    },
+    {
+      "ring_id": 1079,
+      "truth": "STACK",
+      "pred": "GATHER-SCATTER",
+      "confidence": 0.75,
+      "rec": "file_sar"
+    },
+    {
+      "ring_id": 1439,
+      "truth": "STACK",
+      "pred": "FAN-IN",
+      "confidence": 0.85,
+      "rec": "file_sar"
+    },
+    {
+      "ring_id": 101,
+      "truth": "STACK",
+      "pred": "GATHER-SCATTER",
+      "confidence": 0.75,
+      "rec": "file_sar"
+    },
+    {
+      "ring_id": 2485,
+      "truth": null,
+      "pred": "BIPARTITE",
+      "confidence": 0.35,
+      "rec": "monitor"
+    },
+    {
+      "ring_id": 1913,
+      "truth": null,
+      "pred": "FAN-IN",
+      "confidence": 0.3,
+      "rec": "dismiss"
+    },
+    {
+      "ring_id": 2354,
+      "truth": null,
+      "pred": "FAN-IN",
+      "confidence": 0.65,
+      "rec": "monitor"
+    },
+    {
+      "ring_id": 1104,
+      "truth": null,
+      "pred": "GATHER-SCATTER",
+      "confidence": 0.45,
+      "rec": "monitor"
+    },
+    {
+      "ring_id": 1690,
+      "truth": null,
+      "pred": "MIXED",
+      "confidence": 0.3,
+      "rec": "monitor"
+    },
+    {
+      "ring_id": 1830,
+      "truth": null,
+      "pred": "MIXED",
+      "confidence": 0.35,
+      "rec": "monitor"
+    },
+    {
+      "ring_id": 1705,
+      "truth": null,
+      "pred": "FAN-IN",
+      "confidence": 0.65,
+      "rec": "monitor"
+    },
+    {
+      "ring_id": 2772,
+      "truth": null,
+      "pred": "GATHER-SCATTER",
+      "confidence": 0.65,
+      "rec": "monitor"
+    }
+  ]
+}
