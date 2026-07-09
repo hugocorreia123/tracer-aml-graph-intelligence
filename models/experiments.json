@@ -1,0 +1,50 @@
+[
+  {
+    "name": "sage_tuned",
+    "config": {
+      "name": "sage_tuned",
+      "arch": "sage",
+      "layers": 3,
+      "hidden": 256,
+      "heads": 4,
+      "dropout": 0.3,
+      "lr": 0.003,
+      "weight_decay": 5e-05,
+      "pos_weight": 5.0,
+      "epochs": 800,
+      "patience": 30,
+      "seed": 42,
+      "cpu": false,
+      "params": 276738
+    },
+    "train_seconds": 12015,
+    "val_pr_auc": 0.5124921569205146,
+    "val_roc_auc": 0.9507149122855818,
+    "test_pr_auc": 0.518783002961078,
+    "test_roc_auc": 0.946857985795393
+  },
+  {
+    "name": "gat",
+    "config": {
+      "name": "gat",
+      "arch": "gat",
+      "layers": 2,
+      "hidden": 128,
+      "heads": 4,
+      "dropout": 0.3,
+      "lr": 0.003,
+      "weight_decay": 5e-05,
+      "pos_weight": 20.0,
+      "epochs": 800,
+      "patience": 30,
+      "seed": 42,
+      "cpu": false,
+      "params": 40706
+    },
+    "train_seconds": 22191,
+    "val_pr_auc": 0.4720866395602686,
+    "val_roc_auc": 0.9438952647776118,
+    "test_pr_auc": 0.4921049321500284,
+    "test_roc_auc": 0.9459140553321824
+  }
+]
