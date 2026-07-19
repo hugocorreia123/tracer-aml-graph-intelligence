@@ -20,6 +20,9 @@ import streamlit as st
 st.set_page_config(page_title="Tracer — AML Graph Intelligence",
                    layout="wide", page_icon="🕸️")
 
+import tracer_theme as th
+th.inject()
+
 MOTIF_STRENGTH = {"CYCLE": 1.0, "GATHER-SCATTER": 0.9, "FAN-OUT": 0.8,
                   "FAN-IN": 0.8, "MIXED": 0.4}
 
@@ -41,53 +44,95 @@ def load():
 
 rings, op, exps, agree, inv = load()
 
-st.title("🕸️ Tracer — AML Graph Intelligence")
-st.caption("GraphSAGE detects money-laundering **rings** in a 515K-account "
-           "transaction network; a ReAct agent drafts the Suspicious "
-           "Activity Report. **AI suggests — a human decides and files.** "
-           "Synthetic data (IBM AMLworld HI-Small).")
+import tracer_friendly as tf
 
-c1, c2, c3, c4 = st.columns(4)
-c1.metric("GNN vs tabular (test PR-AUC)", "0.519 vs 0.371", "+40%")
-r70 = next(r for r in op if r["recall"] == 0.70)
-c2.metric("False positives @ 70% recall",
-          f"−{1 - r70['gnn']['fp'] / r70['lgbm']['fp']:.0%}",
-          f"{r70['lgbm']['fp'] - r70['gnn']['fp']:,} alerts avoided")
-c3.metric("Judge validity (Cohen's κ)", f"{agree['kappa']:.3f}",
-          f"n={agree['n']} blind human labels")
-c4.metric("Weak rings wrongly escalated",
-          f"{inv['weak_escalated']}/{inv['n_weak']}")
+if not tf.show_welcome():
+    st.stop()
 
-tab_explore, tab_results, tab_about = st.tabs(
-    ["🔍 Ring explorer", "📊 Results", "ℹ️ Method"])
+th.hero(
+    "AML Graph Intelligence",
+    "Tracer",
+    "GraphSAGE finds money-laundering rings in a 515,088-account "
+    "transaction network; a ReAct agent drafts the Suspicious Activity "
+    "Report. AI suggests — a human decides and files.",
+    "Synthetic data · IBM AMLworld HI-Small · every number measured",
+)
+
+# ---------------- active case — one selector drives every panel ----------------
+ranked = sorted(rings.values(), key=lambda r: -r["priority"])
+rank_of = {r["ring_id"]: i + 1 for i, r in enumerate(ranked)}
+sar_dir = Path("app_data/sars")
+investigated = {int(p.stem.split("_")[1])
+                for p in sar_dir.glob("ring_*.json")}
+
+options = [r["ring_id"] for r in ranked[:200]]
+# surface investigated rings first so the demo has instant SARs
+options = sorted(options,
+                 key=lambda rid: (rid not in investigated,
+                                  -rings[rid]["priority"]))
+
+
+def fmt(rid):
+    r = rings[rid]
+    tag = " · SAR ready" if rid in investigated else ""
+    return (f"Ring {rid} — {r['motif_label']} · "
+            f"{r['n_accounts']} accts · ${r['total_amount']:,.0f}"
+            f"{tag}")
+
+
+rid = st.selectbox("🎯 Active case — pick a flagged ring; every panel "
+                   "below follows it", options, format_func=fmt)
+r = rings[rid]
+_sar_file = sar_dir / f"ring_{rid}.json"
+_sar = json.loads(_sar_file.read_text()) if _sar_file.exists() else None
+
+
+def ring_vitals(r, rank, total, sar):
+    """The selected ring's vitals — these change with the case above."""
+    c1, c2, c3, c4 = st.columns(4)
+    with c1:
+        st.metric("Investigation priority", f"#{rank} of {total:,}",
+                  r["motif_label"], delta_color="off")
+        st.caption("**Means:** where this ring sits in the queue — "
+                   "suspicion × motif strength × size.")
+    with c2:
+        st.metric("Suspicion (mean GNN score)",
+                  f"{r['mean_gnn_score']:.3f}")
+        st.caption("**Means:** how strongly the graph model flags these "
+                   "accounts, averaged over the ring.")
+    with c3:
+        st.metric("Money moved", f"${r['total_amount']:,.0f}",
+                  f"{r['n_accounts']} accts · {r['n_tx']} tx",
+                  delta_color="off")
+        st.caption(f"**Means:** USD-normalized flow inside the ring, "
+                   f"{str(r['t_start'])[:10]} → {str(r['t_end'])[:10]}.")
+    with c4:
+        if sar:
+            v = sar.get("verdict", {})
+            rec = str(v.get("recommendation", "?")).replace("_", " ").upper()
+            st.metric("Agent recommendation", rec,
+                      f"confidence {v.get('confidence', 0):.2f}",
+                      delta_color="off")
+            st.caption("**Means:** the drafted SAR's call — pending "
+                       "human review, never auto-filed.")
+        else:
+            st.metric("Agent recommendation", "NOT DRAFTED")
+            st.caption("**Means:** no SAR for this ring yet — pick one "
+                       "marked 'SAR ready', or run the live agent in "
+                       "the explorer.")
+
+
+ring_vitals(r, rank_of[rid], len(rings), _sar)
+st.divider()
+
+tab_explore, tab_results, tab_about, tab_help = st.tabs(
+    ["🔍 Ring explorer", "📊 Results", "ℹ️ Method", "❓ Help"])
 
 # ------------------------------------------------------------------
 with tab_explore:
     left, right = st.columns([3, 2], gap="large")
 
-    ranked = sorted(rings.values(), key=lambda r: -r["priority"])
-    sar_dir = Path("app_data/sars")
-    investigated = {int(p.stem.split("_")[1])
-                    for p in sar_dir.glob("ring_*.json")}
-
-    options = [r["ring_id"] for r in ranked[:200]]
-    # surface investigated rings first so the demo has instant SARs
-    options = sorted(options,
-                     key=lambda rid: (rid not in investigated,
-                                      -rings[rid]["priority"]))
-
-    def fmt(rid):
-        r = rings[rid]
-        tag = " · SAR ready" if rid in investigated else ""
-        return (f"Ring {rid} — {r['motif_label']} · "
-                f"{r['n_accounts']} accts · ${r['total_amount']:,.0f}"
-                f"{tag}")
-
     with left:
-        rid = st.selectbox("Flagged ring (ranked by investigation "
-                           "priority)", options, format_func=fmt)
-        r = rings[rid]
-
         # ---- network figure ----
         H = nx.DiGraph()
         for e in r["edges"]:
@@ -180,6 +225,10 @@ with tab_explore:
 
 # ------------------------------------------------------------------
 with tab_results:
+    tf.show_metrics_live(op, agree, inv)
+    st.caption("Portfolio-level evaluation — fixed test-set numbers. "
+               "The cards above the tabs follow the selected ring.")
+    st.divider()
     a, b = st.columns(2)
     with a:
         st.subheader("Detector: PR-AUC (identical features & split)")
@@ -226,6 +275,7 @@ with tab_results:
 
 # ------------------------------------------------------------------
 with tab_about:
+    tf.show_how_it_works()
     st.markdown("""
 **Pipeline.** 5.08M synthetic bank transactions (IBM AMLworld HI-Small)
 → 515K-account directed graph → 3-layer GraphSAGE node scorer (PyTorch
@@ -249,3 +299,7 @@ FX normalization uses fixed approximate rates.
 Code: [github.com/hugocorreia123/tracer-aml-graph-intelligence](https://github.com/hugocorreia123/tracer-aml-graph-intelligence)
 · Hugo Correia — [LinkedIn](https://www.linkedin.com/in/hugogncorreia)
 """)
+
+# ------------------------------------------------------------------
+with tab_help:
+    tf.show_help()
