@@ -6,6 +6,8 @@
 
 **[Live demo](https://tracer-aml-graph-intelligence.streamlit.app)** · **[Code](https://github.com/hugocorreia123/tracer-aml-graph-intelligence)**
 
+The demo is an **investigation console**: pick a flagged ring and its priority, suspicion, money flow and the agent's call follow instantly — with a plain-language tour, one-sentence metric explanations, and an honesty box built into the interface.
+
 ---
 
 ## Results
