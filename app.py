@@ -87,39 +87,61 @@ _sar_file = sar_dir / f"ring_{rid}.json"
 _sar = json.loads(_sar_file.read_text()) if _sar_file.exists() else None
 
 
+MOTIF_MEANS = {
+    "CYCLE": "money loops back to where it started",
+    "FAN-OUT": "one account sprays funds out to many",
+    "FAN-IN": "many accounts converge into one",
+    "GATHER-SCATTER": "funds are collected into one place, then dispersed",
+    "SCATTER-GATHER": "funds are dispersed, then quietly re-collected",
+    "MIXED": "several laundering patterns at once",
+}
+
+
 def ring_vitals(r, rank, total, sar):
     """The selected ring's vitals — these change with the case above."""
     c1, c2, c3, c4 = st.columns(4)
     with c1:
-        st.metric("Investigation priority", f"#{rank} of {total:,}",
-                  r["motif_label"], delta_color="off")
-        st.caption("**Means:** where this ring sits in the queue — "
-                   "suspicion × motif strength × size.")
+        st.metric("Investigation priority", f"#{rank} of {total:,}")
+        st.caption("**Means:** position in the investigator's queue — "
+                   "suspicion × pattern strength × size decide who "
+                   "gets looked at first.")
     with c2:
-        st.metric("Suspicion (mean GNN score)",
-                  f"{r['mean_gnn_score']:.3f}")
-        st.caption("**Means:** how strongly the graph model flags these "
-                   "accounts, averaged over the ring.")
+        s = r["mean_gnn_score"]
+        word = ("very high" if s >= 0.9 else "high" if s >= 0.7
+                else "elevated" if s >= 0.5 else "moderate")
+        st.metric("Suspicion", f"{s:.3f}")
+        st.caption(f"**Means:** {word}. The graph model's confidence "
+                   "that these accounts are laundering — 1.000 would "
+                   "be certainty.")
     with c3:
-        st.metric("Money moved", f"${r['total_amount']:,.0f}",
-                  f"{r['n_accounts']} accts · {r['n_tx']} tx",
-                  delta_color="off")
-        st.caption(f"**Means:** USD-normalized flow inside the ring, "
-                   f"{str(r['t_start'])[:10]} → {str(r['t_end'])[:10]}.")
+        st.metric("Money moved", f"${r['total_amount']:,.0f}")
+        try:
+            from datetime import date as _d
+            _days = (_d.fromisoformat(str(r["t_end"])[:10])
+                     - _d.fromisoformat(str(r["t_start"])[:10])).days + 1
+            _span = f"over {_days} days"
+        except Exception:
+            _span = "in the observed window"
+        st.caption(f"**Means:** {r['n_accounts']} accounts moved this "
+                   f"in {r['n_tx']} transfers {_span} — all amounts "
+                   "USD-normalized.")
     with c4:
         if sar:
             v = sar.get("verdict", {})
             rec = str(v.get("recommendation", "?")).replace("_", " ").upper()
-            st.metric("Agent recommendation", rec,
-                      f"confidence {v.get('confidence', 0):.2f}",
-                      delta_color="off")
-            st.caption("**Means:** the drafted SAR's call — pending "
-                       "human review, never auto-filed.")
+            st.metric("Agent's call", rec)
+            st.caption(f"**Means:** the drafted report's recommendation, "
+                       f"held at confidence {v.get('confidence', 0):.2f} — "
+                       "a human reviews and files. Never automatic.")
         else:
-            st.metric("Agent recommendation", "NOT DRAFTED")
-            st.caption("**Means:** no SAR for this ring yet — pick one "
-                       "marked 'SAR ready', or run the live agent in "
-                       "the explorer.")
+            st.metric("Agent's call", "No draft yet")
+            st.caption("**Means:** pick a ring marked 'SAR ready' for an "
+                       "instant draft, or run the live agent in the "
+                       "explorer.")
+    motif = r["motif_label"]
+    st.caption(f"**Pattern — {motif}:** "
+               f"{MOTIF_MEANS.get(motif, 'an irregular structure')}. "
+               "The red graph in the explorer draws it.")
 
 
 ring_vitals(r, rank_of[rid], len(rings), _sar)
