@@ -80,8 +80,11 @@ def fmt(rid):
             f"{tag}")
 
 
+_sar_default = next((i for i, _r in enumerate(options)
+                     if _r in investigated), 0)
 rid = st.selectbox("🎯 Active case — pick a flagged ring; every panel "
-                   "below follows it", options, format_func=fmt)
+                   "below follows it", options, index=_sar_default,
+                   format_func=fmt)
 r = rings[rid]
 _sar_file = sar_dir / f"ring_{rid}.json"
 _sar = json.loads(_sar_file.read_text()) if _sar_file.exists() else None
