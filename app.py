@@ -82,8 +82,16 @@ def fmt(rid):
 
 _sar_default = next((i for i, _r in enumerate(options)
                      if _r in investigated), 0)
+# key= makes the selectbox own its state, so st.rerun() after a live
+# investigation keeps the ring the user picked (index= is only the
+# first-load default and must not fight the widget's remembered value).
+if "tracer_ring" not in st.session_state:
+    st.session_state["tracer_ring"] = options[_sar_default]
+# a prior run may have left a ring that's no longer in the list
+if st.session_state["tracer_ring"] not in options:
+    st.session_state["tracer_ring"] = options[_sar_default]
 rid = st.selectbox("🎯 Active case — pick a flagged ring; every panel "
-                   "below follows it", options, index=_sar_default,
+                   "below follows it", options, key="tracer_ring",
                    format_func=fmt)
 r = rings[rid]
 _sar_file = sar_dir / f"ring_{rid}.json"
