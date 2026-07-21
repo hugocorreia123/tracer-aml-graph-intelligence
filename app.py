@@ -232,25 +232,61 @@ with tab_explore:
             b.metric("Confidence", f"{v.get('confidence', 0):.2f}")
             c.metric("Recommendation",
                      str(v.get("recommendation", "?")))
+            _typ = str(v.get("typology", "")).upper()
+            _plain = {
+                "GATHER-SCATTER": "Lots of accounts quietly fed money "
+                    "into one \"collector\" account, which then split it "
+                    "back out to several others — a way to blur the trail "
+                    "between where money came from and where it went.",
+                "FAN-OUT": "One account sprayed money out to many others "
+                    "in quick succession — a way to disperse funds so no "
+                    "single transfer looks large.",
+                "FAN-IN": "Many accounts funnelled money into one — "
+                    "consolidating dispersed funds into a single pot.",
+                "CYCLE": "Money moved in a loop, ending up back where it "
+                    "started — circular transfers that manufacture a "
+                    "paper trail without real economic purpose.",
+            }.get(_typ, "The accounts moved money in a coordinated "
+                  "pattern the model flags as laundering.")
+            st.markdown(f"🗣️ **In plain terms.** {_plain} The technical "
+                        "write-up below is what an analyst would file.")
             st.markdown("**Summary.** "
                         + str(v.get("summary", "")).replace("$", "\\$"))
             if v.get("key_evidence"):
-                st.markdown("**Key evidence**")
-                for e in v["key_evidence"]:
-                    st.markdown(f"- {str(e).replace('$', chr(92) + '$')}")
+                with st.expander("🔍 Key evidence (the specific transfers)"):
+                    for e in v["key_evidence"]:
+                        st.markdown(f"- {str(e).replace('$', chr(92) + '$')}")
             st.caption(f"drafted by {sar['model']} · "
                        f"{sar['tool_calling_turns']} tool-calling turns "
                        f"· generated {sar['generated_at'][:19]}")
         elif os.environ.get("GROQ_API_KEY"):
             if st.button("🔎 Investigate this ring (live agent)"):
-                with st.spinner("agent investigating ..."):
-                    import sys
-                    sys.path.insert(0, "scripts")
-                    from investigate import investigate
-                    sar = investigate(rid)
+                import sys
+                sys.path.insert(0, "scripts")
+                from investigate import investigate
+                sar, err = None, None
+                with st.spinner("agent investigating ... (up to 3 tries)"):
+                    for _try in range(3):
+                        try:
+                            sar = investigate(rid)
+                            if isinstance(sar.get("verdict"), dict) and \
+                               "parse_error" not in sar["verdict"]:
+                                break
+                            err = "model returned an unparseable draft"
+                        except Exception as e:
+                            err = f"{type(e).__name__}: {e}"
+                if sar and "parse_error" not in sar.get("verdict", {}):
                     sar_dir.mkdir(exist_ok=True)
                     sar_path.write_text(json.dumps(sar, indent=2))
                     st.rerun()
+                else:
+                    st.error("The live agent couldn't complete a clean "
+                             "draft in 3 tries — this is a known quirk of "
+                             "the model's tool-calling, not the pipeline. "
+                             "Press the button again, or open a ring "
+                             "marked **SAR ready** for an instant example.")
+                    with st.expander("Technical detail"):
+                        st.write(err or "unparseable model output")
         else:
             st.info("No pre-drafted SAR for this ring. Pick one marked "
                     "**SAR ready** in the selector above for an instant "
