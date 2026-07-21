@@ -233,8 +233,7 @@ with tab_explore:
             st.caption(f"drafted by {sar['model']} · "
                        f"{sar['tool_calling_turns']} tool-calling turns "
                        f"· generated {sar['generated_at'][:19]}")
-        elif (os.environ.get("GROQ_API_KEY")
-              and Path("data/processed/rings.json").exists()):
+        elif os.environ.get("GROQ_API_KEY"):
             if st.button("🔎 Investigate this ring (live agent)"):
                 with st.spinner("agent investigating ..."):
                     import sys
@@ -246,11 +245,9 @@ with tab_explore:
                     st.rerun()
         else:
             st.info("No pre-drafted SAR for this ring. Pick one marked "
-                    "**SAR ready** in the selector above to read a real "
-                    "drafted report. (Live on-demand investigation needs "
-                    "the full training graph and a GROQ_API_KEY — it runs "
-                    "in the local build; the hosted demo ships the "
-                    "pre-drafted SARs instead.)")
+                    "**SAR ready** in the selector above for an instant "
+                    "report — or set a **GROQ_API_KEY** to let the live "
+                    "agent investigate any ring on demand.")
 
 # ------------------------------------------------------------------
 with tab_results:

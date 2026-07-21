@@ -32,14 +32,19 @@ from langgraph.prebuilt import create_react_agent
 load_dotenv()
 assert os.environ.get("GROQ_API_KEY"), "GROQ_API_KEY missing (.env)"
 
-MODEL = "qwen/qwen3-32b"
+MODEL = "openai/gpt-oss-120b"
 MOTIF_STRENGTH = {"CYCLE": 1.0, "GATHER-SCATTER": 0.9, "FAN-OUT": 0.8,
                   "FAN-IN": 0.8, "MIXED": 0.4}
 
+_rings_path = (Path("data/processed/rings.json")
+               if Path("data/processed/rings.json").exists()
+               else Path("app_data/rings.json"))
 rings = {r["ring_id"]: r for r in
-         json.loads(Path("data/processed/rings.json").read_text())}
-feat = pd.read_parquet("data/processed/features.parquet").set_index(
-    "node_id")
+         json.loads(_rings_path.read_text())}
+
+_feat_path = Path("data/processed/features.parquet")
+feat = (pd.read_parquet(_feat_path).set_index("node_id")
+        if _feat_path.exists() else None)
 
 CURRENT_RING: dict = {}   # set per investigation
 
@@ -69,6 +74,11 @@ def get_flows(limit: int = 30) -> str:
 def get_account_profile(account_id: str) -> str:
     """Behavioral profile of one account: transaction counts, in/out
     amounts, unique counterparties, velocity, flow ratio (out/in)."""
+    if feat is None:
+        return json.dumps({"note": "per-account behavioral features are "
+                           "not bundled in the hosted demo; reason from "
+                           "the ring summary, transactions, and structure "
+                           "instead."})
     if account_id not in feat.index:
         return json.dumps({"error": f"unknown account {account_id}"})
     row = feat.loc[account_id]
