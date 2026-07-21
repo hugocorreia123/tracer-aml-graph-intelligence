@@ -261,21 +261,27 @@ with tab_explore:
                        f"· generated {sar['generated_at'][:19]}")
         elif os.environ.get("GROQ_API_KEY"):
             if st.button("🔎 Investigate this ring (live agent)"):
-                import sys
-                sys.path.insert(0, "scripts")
-                from investigate import investigate
                 sar, err = None, None
-                with st.spinner("agent investigating ... (up to 3 tries)"):
-                    for _try in range(3):
-                        try:
-                            sar = investigate(rid)
-                            if isinstance(sar.get("verdict"), dict) and \
-                               "parse_error" not in sar["verdict"]:
-                                break
-                            err = "model returned an unparseable draft"
-                        except Exception as e:
-                            err = f"{type(e).__name__}: {e}"
-                if sar and "parse_error" not in sar.get("verdict", {}):
+                with st.spinner("agent investigating this ring — "
+                                "first run loads the model, ~15-40s "
+                                "(up to 3 tries) ..."):
+                    try:
+                        import sys
+                        sys.path.insert(0, "scripts")
+                        from investigate import investigate
+                        for _try in range(3):
+                            try:
+                                sar = investigate(rid)
+                                if isinstance(sar.get("verdict"), dict) and \
+                                   "parse_error" not in sar["verdict"]:
+                                    break
+                                err = "model returned an unparseable draft"
+                                sar = None
+                            except Exception as e:
+                                err = f"{type(e).__name__}: {e}"
+                    except Exception as e:
+                        err = f"setup failed — {type(e).__name__}: {e}"
+                if sar:
                     sar_dir.mkdir(exist_ok=True)
                     sar_path.write_text(json.dumps(sar, indent=2))
                     st.rerun()
